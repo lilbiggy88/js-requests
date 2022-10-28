@@ -30,12 +30,12 @@ module.exports = {
     approveAppointment: (req, res) => {
         let {apptId} = req.body
     
-        sequelize.query(`SELECT * FROM cc_appointments WHERE approved= true AND appId= req.body
+        sequelize.query(`UPDATE cc_appointments SET  approved= true WHERE appt_id = ${apptId}; 
         
         insert into cc_emp_appts (emp_id, appt_id)
         values (${nextEmp}, ${apptId}),
         (${nextEmp + 1}, ${apptId});
-        `)
+        ;`)
             .then(dbRes => {
                 res.status(200).send(dbRes[0])
                 nextEmp += 2
@@ -73,8 +73,13 @@ module.exports = {
     completeAppointment: (req,res) => {
         let {apptId} = req.body
 
-        sequelize.query(`update cc_appointments set approved = true
-        where appt_id = ${apptId}`)
+        sequelize.query(`UPDATE cc_appointments SET completed = true
+        WHERE appt_id = ${apptId};
+        
+        insert into cc_emp_appts (emp_id, appt_id)
+        values (${nextEmp}, ${apptId}),
+        (${nextEmp + 1}, ${apptId});
+            `)
         .then(dbRes => res.status(200).send(dbRes[0]))
         .catch(err => console.log(err))
     }

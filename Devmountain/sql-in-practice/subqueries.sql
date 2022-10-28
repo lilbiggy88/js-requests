@@ -9,6 +9,10 @@ FROM playlist_track
 WHERE track_id IN (
   SELECT track_id FROM playlist WHERE name = 'music') 
 
+   
+  select track_id from playlist_track
+  where playlist_id in (select playlist_id from playlist 
+
 -- Get all track names for playlist_id 5.
 SELECT * FROM track
 WHERE name IN (
